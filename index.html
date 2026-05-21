@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الانتخابات التشريعية 2026 - ولاية جيجل</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:#eef2f7;color:#222;direction:rtl;font-size:14px}
+:root{--pri:#0d3b66;--acc:#27ae60;--red:#e74c3c;--org:#e67e22;--brd:#dde3ec}
+#toast-wrap{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;min-width:220px}
+.toast{padding:11px 22px;border-radius:9px;color:#fff;font-size:.88rem;font-weight:bold;box-shadow:0 4px 18px rgba(0,0,0,.22);animation:tIn .3s ease;text-align:center}
+.toast.success{background:#27ae60}.toast.error{background:#e74c3c}.toast.info{background:#2980b9}.toast.saving{background:#e67e22}
+@keyframes tIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+#confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:8000;align-items:center;justify-content:center}
+#confirm-overlay.show{display:flex}
+.confirm-box{background:#fff;border-radius:14px;padding:30px 34px;max-width:390px;width:92%;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.22)}
+.confirm-box h3{color:var(--pri);margin-bottom:10px;font-size:1.05rem}
+.confirm-box p{color:#555;font-size:.88rem;margin-bottom:22px;line-height:1.7}
+.confirm-btns{display:flex;gap:10px;justify-content:center}
+#login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#0d3b66,#1a5c9a);z-index:7000;display:flex;align-items:center;justify-content:center}
+.login-box{background:#fff;border-radius:18px;padding:36px 38px;width:350px;max-width:94vw;box-shadow:0 12px 50px rgba(0,0,0,.3);text-align:center}
+.login-box .logo{font-size:2.8rem;margin-bottom:8px}
+.login-box h2{color:var(--pri);font-size:1.12rem;margin-bottom:3px}
+.login-box .sub{color:#888;font-size:.8rem;margin-bottom:24px}
+.login-err{background:#fde8e8;color:#c0392b;border-radius:7px;padding:8px;font-size:.82rem;margin-bottom:12px;display:none}
+.login-err.show{display:block}
+.vis-btn{color:#888;font-size:.8rem;cursor:pointer;text-decoration:underline;margin-top:14px;display:block}
+#app-header{background:linear-gradient(135deg,#0d3b66,#1a5c9a);color:#fff;display:none;align-items:center;justify-content:space-between;padding:10px 20px;gap:10px}
+.hdr-center h1{font-size:.98rem;font-weight:bold;line-height:1.45;text-align:center}
+.hdr-right{text-align:left;font-size:.72rem;line-height:1.8;min-width:130px}
+.hdr-right .name{color:#4ade80;font-weight:bold;font-size:.88rem}
+.hdr-right .phone{color:#bfdbfe;font-size:.76rem;direction:ltr}
+.logout-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:4px 12px;border-radius:6px;cursor:pointer;font-size:.74rem;margin-top:4px;display:inline-block}
+.vis-badge{background:#e67e22;color:#fff;font-size:.65rem;padding:2px 9px;border-radius:8px}
+.save-dot{width:8px;height:8px;border-radius:50%;background:#4ade80;display:inline-block;margin-right:4px;transition:background .3s}
+.save-dot.saving{background:#fbbf24;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+#app-nav{background:#0a2e52;display:none;justify-content:center;flex-wrap:wrap}
+.ntab{padding:11px 26px;color:#99b8d4;font-size:.86rem;font-weight:bold;cursor:pointer;border-bottom:3px solid transparent;transition:.22s}
+.ntab.active{color:#fff;border-color:#27ae60}
+.ntab:hover{color:#fff}
+.page{display:none;padding:16px;max-width:1500px;margin:0 auto}
+.page.show{display:block}
+.card{background:#fff;border-radius:11px;padding:16px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.card-title{color:var(--pri);font-size:.95rem;font-weight:bold;border-bottom:2px solid var(--acc);padding-bottom:7px;margin-bottom:13px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.search-inp{width:100%;padding:9px 14px;border:2px solid var(--brd);border-radius:8px;font-size:.88rem;direction:rtl;font-family:inherit;margin-bottom:12px;transition:.2s}
+.search-inp:focus{outline:none;border-color:var(--acc)}
+.muni-grid{display:flex;flex-wrap:wrap;gap:8px;padding:6px}
+.muni-tile{border:2px solid #b8cce0;border-radius:10px;padding:10px 8px;text-align:center;cursor:pointer;transition:.22s;min-width:96px;flex:1 1 calc(16.66% - 8px);max-width:155px;position:relative;font-size:.82rem;font-weight:bold;color:var(--pri);line-height:1.35}
+.muni-tile:hover{background:linear-gradient(135deg,#0d3b66,#1a5c9a)!important;color:#fff;border-color:#0d3b66;transform:translateY(-2px);box-shadow:0 5px 16px rgba(13,59,102,.25)}
+.done-dot{position:absolute;top:5px;left:5px;width:9px;height:9px;border-radius:50%;background:#27ae60}
+.muni-num{font-size:.65rem;opacity:.6;margin-top:3px}
+.muni-tile.hidden-tile{display:none!important}
+.stat-row{display:grid;gap:10px;margin-bottom:14px}
+.sc{background:#fff;border-radius:10px;padding:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.09);border-top:4px solid var(--acc)}
+.sc .ico{font-size:1.4rem;margin-bottom:4px}
+.sc .val{font-size:1.15rem;font-weight:bold;color:var(--pri)}
+.sc .lbl{font-size:.69rem;color:#666;margin-top:3px}
+.rtbl{width:100%;border-collapse:collapse;font-size:.83rem}
+.rtbl th{background:var(--pri);color:#fff;padding:9px 8px;text-align:center;font-weight:600;white-space:nowrap}
+.rtbl td{padding:8px 8px;text-align:center;border-bottom:1px solid #eef;white-space:nowrap}
+.rtbl tr:hover td{background:#f5f8ff}
+.rtbl .r1 td{background:#fffde7}
+.bar-cell{min-width:80px}
+.bar-bg{background:#e8ecf4;border-radius:8px;height:8px;overflow:hidden}
+.bar-fg{height:8px;border-radius:8px}
+.badge{display:inline-block;font-size:.65rem;padding:2px 8px;border-radius:10px;color:#fff;white-space:nowrap}
+.badge.pass{background:#27ae60}.badge.maqsa{background:#e74c3c}
+.chart-row{display:grid;grid-template-columns:250px 1fr;gap:14px;margin-top:14px}
+@media(max-width:780px){.chart-row{grid-template-columns:1fr}}
+.chart-box{background:#fff;border-radius:10px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.chart-box h4{text-align:center;color:var(--pri);font-size:.85rem;margin-bottom:10px}
+.seats-hdr{background:linear-gradient(135deg,#0d3b66,#1a5c9a);color:#fff;border-radius:10px 10px 0 0;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
+.seats-body{background:#fff;border-radius:0 0 10px 10px;padding:16px;box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.seats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-top:12px}
+.seat-card{border-radius:10px;padding:14px;color:#fff;position:relative;box-shadow:0 3px 10px rgba(0,0,0,.18)}
+.seat-card.elim{background:linear-gradient(135deg,#c0392b,#e74c3c)!important}
+.seat-card .ribbon{position:absolute;top:8px;left:8px;background:rgba(255,255,255,.22);font-size:.64rem;padding:2px 8px;border-radius:8px}
+.parl-vis{display:flex;flex-wrap:wrap;gap:5px;margin:12px 0;justify-content:center}
+.seat-dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.56rem;font-weight:bold;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:.2s;cursor:default}
+.seat-dot:hover{transform:scale(1.2)}
+.quota-box{background:#e8f4fd;border:1px solid #a8d4f0;border-radius:8px;padding:12px 16px;margin-bottom:12px;font-size:.82rem;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.quota-box .qval{background:#0d3b66;color:#fff;padding:4px 14px;border-radius:20px;font-weight:bold;font-size:.88rem}
+.threshold-box{background:#fff8e1;border-right:4px solid #f39c12;padding:10px 14px;border-radius:7px;font-size:.82rem;margin-bottom:12px}
+.allbelow-box{background:#fde8e8;border-right:4px solid #e74c3c;padding:10px 14px;border-radius:7px;font-size:.82rem;margin-bottom:12px}
+.ctr-block{background:#f8faff;border-radius:10px;border:1px solid #d0d8f0;margin-bottom:10px;overflow:hidden}
+.ctr-head{background:var(--pri);color:#fff;padding:10px 14px;font-weight:bold;font-size:.84rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:6px}
+.ctr-head:hover{background:#1a5c9a}
+.ctr-body{padding:12px;display:none}
+.ctr-body.open{display:block}
+.off-card{background:#fff;border-radius:8px;border:1px solid #dde;margin-bottom:8px;overflow:hidden}
+.off-card-head{background:#eef2f7;padding:8px 12px;font-size:.81rem;font-weight:bold;color:var(--pri);display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;overflow-y:auto;padding:12px}
+.overlay.show{display:flex;align-items:flex-start;justify-content:center}
+.modal{background:#fff;border-radius:13px;width:100%;max-width:590px;margin:auto;display:flex;flex-direction:column;max-height:92vh}
+.modal.wide{max-width:790px}
+.modal-head{background:linear-gradient(135deg,#0d3b66,#1a5c9a);color:#fff;padding:14px 18px;border-radius:13px 13px 0 0;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.modal-head h3{font-size:.94rem}
+.modal-close{background:none;border:none;color:#fff;font-size:1.3rem;cursor:pointer;opacity:.8;padding:0 4px}
+.modal-close:hover{opacity:1}
+.modal-body{padding:16px;overflow-y:auto;flex:1}
+.modal-foot{padding:12px 16px;background:#f8f9fa;border-radius:0 0 13px 13px;display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0}
+.fg{margin-bottom:11px}
+.fg label{display:block;font-size:.81rem;font-weight:bold;color:var(--pri);margin-bottom:4px}
+.fg input,.fg select{width:100%;padding:7px 11px;border:1.5px solid var(--brd);border-radius:7px;font-size:.87rem;direction:rtl;font-family:inherit;transition:.2s}
+.fg input:focus{outline:none;border-color:var(--acc)}
+.fg input[readonly]{background:#f0f4f8;color:#555}
+.row2{display:flex;gap:8px;align-items:flex-end}
+.row2 .fg{flex:1;margin-bottom:0}
+.center-blk{background:#f5f8ff;border-radius:9px;padding:12px;margin-bottom:10px;border-right:3px solid var(--acc)}
+.center-blk .cn{font-weight:bold;color:var(--pri);font-size:.88rem;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px}
+.off-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:.81rem;border-bottom:1px dashed #dde;gap:6px}
+.off-row:last-of-type{border:none}
+.off-row span{flex:1;min-width:0}
+.list-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f5f8ff;border-radius:7px;margin-bottom:6px;gap:6px}
+.list-row span{flex:1}
+.a-box{border-radius:7px;padding:9px 12px;font-size:.82rem;margin-bottom:10px;display:none}
+.a-box.show{display:block}
+.a-box.warn{background:#fff3cd;border:1px solid #ffc107;color:#856404}
+.a-box.ok{background:#d4edda;border:1px solid #28a745;color:#155724}
+.note-box{background:#e8f4fd;border:1px solid #a8d4f0;border-radius:7px;padding:9px 12px;font-size:.82rem;color:#1a5c9a;margin-bottom:10px}
+.btn{padding:7px 16px;border:none;border-radius:7px;cursor:pointer;font-size:.84rem;font-family:inherit;font-weight:bold;transition:.18s;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-pri{background:var(--pri);color:#fff}.btn-pri:hover:not(:disabled){background:#1a5c9a}
+.btn-suc{background:var(--acc);color:#fff}.btn-suc:hover:not(:disabled){background:#1e9948}
+.btn-red{background:var(--red);color:#fff}.btn-red:hover:not(:disabled){background:#c0392b}
+.btn-org{background:var(--org);color:#fff}.btn-org:hover:not(:disabled){background:#ca6f1e}
+.btn-pur{background:#8e44ad;color:#fff}.btn-pur:hover:not(:disabled){background:#7d3c98}
+.btn-teal{background:#16a085;color:#fff}.btn-teal:hover{background:#128270}
+.btn-sm{padding:4px 10px;font-size:.74rem}
+.btn-ghost{background:#e8ecf4;color:var(--pri)}.btn-ghost:hover{background:#d0d8ea}
+.hidden{display:none!important}
+.sep{border:none;border-top:1px solid #eee;margin:10px 0}
+.txt-center{text-align:center}
+.txt-muted{color:#888;font-size:.8rem}
+.tbl-wrap{overflow-x:auto}
+@media print{
+  #app-nav,#app-header .logout-btn,#app-header .vis-badge,.btn,#toast-wrap,
+  #confirm-overlay,.overlay,.search-inp,#tab-data,#tab-results,#tab-tools{display:none!important}
+  body{background:#fff}
+  .page{display:block!important;padding:0}
+  .card{box-shadow:none;border:1px solid #ddd;margin-bottom:10px}
+  .chart-row{grid-template-columns:1fr 1fr}
+  .stat-row{grid-template-columns:repeat(5,1fr)!important}
+  .sc{box-shadow:none;border:1px solid #ddd}
+}
+.ftr{background:var(--pri);color:#aac3e0;text-align:center;padding:10px;font-size:.75rem;margin-top:20px}
+.ftr strong{color:#fff}
+</style>
+
+<!-- Firebase — module script -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD7KHoOAd-9ipyy5wfaOeAkezNtxs73iY8",
+  authDomain: "willaya18elections.firebaseapp.com",
+  projectId: "willaya18elections",
+  storageBucket: "willaya18elections.firebasestorage.app",
+  messagingSenderId: "507000358861",
+  appId: "1:507000358861:web:0d1fd05515d2f9c6f56684",
+  measurementId: "G-MK853R6MBZ"
+};
+
+const app = initializeApp(firebaseConfig);
+const _db  = getFirestore(app);
+const _auth = getAuth(app);
+
+// نجعل كل شيء متاحاً للـ script العادي عبر window
+window._db   = _db;
+window._auth = _auth;
+window._fbFns = { doc, setDoc, onSnapshot, signInWithEmailAndPassword, onAuthStateChanged, signOut };
+
+// نُطلق حدثاً بعد تهيئة Firebase
+window.dispatchEvent(new Event('firebase-ready'));
+</script>
+</head>
+<body>
+
+<div id="toast-wrap"></div>
+
+<!-- CONFIRM -->
+<div id="confirm-overlay">
+  <div class="confirm-box">
+    <h3 id="cfm-title">تأكيد</h3>
+    <p id="cfm-msg"></p>
+    <div class="confirm-btns">
+      <button class="btn btn-red" id="cfm-yes">✓ تأكيد</button>
+      <button class="btn btn-ghost" id="cfm-no">✕ إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="logo">🗳️</div>
+    <h2>الانتخابات التشريعية 2026</h2>
+    <div class="sub">ولاية جيجل — نظام إدارة النتائج</div>
+    <div class="login-err" id="login-err"></div>
+    <div class="fg">
+      <label>البريد الإلكتروني</label>
+      <input type="email" id="l-user" autocomplete="username" placeholder="البريد الإلكتروني...">
+    </div>
+    <div class="fg">
+      <label>كلمة المرور</label>
+      <input type="password" id="l-pass" autocomplete="current-password" placeholder="كلمة المرور..."
+             onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn btn-pri" id="login-btn"
+            style="width:100%;padding:11px;justify-content:center;font-size:.95rem"
+            onclick="doLogin()">🔐 دخول</button>
+    <span class="vis-btn" onclick="enterVisitor()">👁️ دخول كزائر (عرض النتائج فقط)</span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div id="app-header">
+  <div style="min-width:60px"></div>
+  <div class="hdr-center">
+    <h1>نتائج الانتخابات التشريعية 2026<br><span style="color:#4ade80">ولاية جيجل</span></h1>
+  </div>
+  <div class="hdr-right">
+    <div class="name">صالح عمور</div>
+    <div class="phone">0799340844</div>
+    <div id="user-info" style="margin-top:4px"></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div id="app-nav">
+  <div class="ntab active" id="ntab-display" onclick="gotoTab('display')">📊 عرض النتائج</div>
+  <div class="ntab hidden"  id="ntab-data"    onclick="gotoTab('data')">📋 إدخال البيانات</div>
+  <div class="ntab hidden"  id="ntab-results" onclick="gotoTab('results')">✏️ إدخال النتائج</div>
+  <div class="ntab hidden"  id="ntab-tools"   onclick="gotoTab('tools')">⚙️ أدوات</div>
+</div>
+
+<!-- DISPLAY TAB -->
+<div id="tab-display" class="page">
+  <div id="wilaya-stats"></div>
+  <div class="card">
+    <div class="card-title">
+      <span>📊 نتائج القوائم — ولاية جيجل</span>
+      <span id="lock-badge" style="margin-right:auto"></span>
+    </div>
+    <div id="wilaya-table"></div>
+    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-pri"  onclick="distributeSeats()">🏛️ توزيع المقاعد (7)</button>
+      <button class="btn btn-teal" onclick="window.print()">🖨️ طباعة</button>
+      <button class="btn btn-org"  onclick="saveSnapshot()">💾 حفظ نسخة في الجهاز</button>
+    </div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-box"><h4>🥧 توزيع الأصوات</h4><canvas id="pie-c" width="240" height="240"></canvas></div>
+    <div class="chart-box"><h4>📊 الأصوات حسب القوائم</h4><div class="tbl-wrap"><canvas id="bar-c" height="200"></canvas></div></div>
+  </div>
+  <div id="seats-section" class="hidden" style="margin-top:14px"></div>
+  <div class="card" style="margin-top:14px">
+    <div class="card-title">🏘️ نتائج البلديات — اضغط للتفاصيل</div>
+    <input class="search-inp" id="srch-disp" placeholder="🔍 ابحث عن بلدية..." oninput="filterGrid('muni-grid-display',this.value)">
+    <div id="muni-grid-display"></div>
+  </div>
+</div>
+
+<!-- DATA TAB -->
+<div id="tab-data" class="page">
+  <div class="card">
+    <div class="card-title">📋 بلديات ولاية جيجل — اضغط لإدخال البيانات</div>
+    <input class="search-inp" id="srch-data" placeholder="🔍 ابحث عن بلدية..." oninput="filterGrid('muni-grid-data',this.value)">
+    <div id="muni-grid-data"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📝 القوائم المترشحة</div>
+    <input class="search-inp" id="srch-lists" placeholder="🔍 ابحث عن قائمة..." oninput="filterLists(this.value)">
+    <div id="lists-ui"></div>
+    <div class="row2" style="margin-top:10px">
+      <div class="fg"><input id="nl-inp" placeholder="اسم القائمة الجديدة..."></div>
+      <button class="btn btn-suc" onclick="addList()">➕ إضافة</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS TAB -->
+<div id="tab-results" class="page">
+  <div class="card">
+    <div class="card-title">✏️ بلديات ولاية جيجل — اضغط لإدخال النتائج</div>
+    <input class="search-inp" id="srch-res" placeholder="🔍 ابحث عن بلدية..." oninput="filterGrid('muni-grid-results',this.value)">
+    <div id="muni-grid-results"></div>
+  </div>
+</div>
+
+<!-- TOOLS TAB -->
+<div id="tab-tools" class="page">
+  <div class="card">
+    <div class="card-title">🔒 قفل / فتح النتائج</div>
+    <p style="font-size:.85rem;color:#555;margin-bottom:14px">بعد اعتماد النتائج يمكن قفلها لمنع أي تعديل لاحق.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-pur" onclick="lockResults()">🔒 قفل النتائج</button>
+      <button class="btn btn-suc" onclick="unlockResults()">🔓 إعادة فتح</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">💾 استيراد / تصدير البيانات</div>
+    <p style="font-size:.84rem;color:#555;margin-bottom:12px">أنشئ نسخة احتياطية أو استعد بيانات سابقة.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-pri" onclick="exportJSON()">📤 تصدير JSON</button>
+      <label class="btn btn-org" style="cursor:pointer">📥 استيراد JSON<input type="file" accept=".json" onchange="importJSON(this)" style="display:none"></label>
+      <button class="btn btn-teal" onclick="saveSnapshot()">💾 حفظ نسخة في الجهاز</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title" style="color:var(--red)">⚠️ مسح البيانات</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-red" onclick="clearVotes()">🗑 مسح النتائج فقط</button>
+      <button class="btn btn-red" onclick="clearAll()">⚠️ مسح جميع البيانات</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: DATA -->
+<div class="overlay" id="ov-data">
+  <div class="modal">
+    <div class="modal-head"><h3 id="m-data-title">بيانات البلدية</h3><button class="modal-close" onclick="closeOv('ov-data')">✕</button></div>
+    <div class="modal-body" id="m-data-body"></div>
+    <div class="modal-foot"><button class="btn btn-ghost" onclick="closeOv('ov-data')">إغلاق</button></div>
+  </div>
+</div>
+
+<!-- MODAL: RESULTS -->
+<div class="overlay" id="ov-res">
+  <div class="modal">
+    <div class="modal-head"><h3 id="m-res-title">إدخال النتائج</h3><button class="modal-close" onclick="closeOv('ov-res')">✕</button></div>
+    <div class="modal-body" id="m-res-body"></div>
+    <div class="modal-foot" id="m-res-foot"></div>
+  </div>
+</div>
+
+<!-- MODAL: DISPLAY -->
+<div class="overlay" id="ov-disp">
+  <div class="modal wide">
+    <div class="modal-head"><h3 id="m-disp-title">نتائج البلدية</h3><button class="modal-close" onclick="closeOv('ov-disp')">✕</button></div>
+    <div class="modal-body" id="m-disp-body"></div>
+    <div class="modal-foot"><button class="btn btn-ghost" onclick="closeOv('ov-disp')">إغلاق</button></div>
+  </div>
+</div>
+
+<div class="ftr">جميع الحقوق محفوظة &nbsp;<strong>صالح عمور</strong>&nbsp; | 0799340844 | الانتخابات التشريعية 2026 | ولاية جيجل</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// الثوابت والمتغيرات العامة
+// ══════════════════════════════════════════════════════════
+const esc = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+const fmt = n => Number(n || 0).toLocaleString('ar-DZ');
+const pct = (v, t) => t > 0 ? ((v / t) * 100).toFixed(2) : '0.00';
+
+const MUNIS = [
+  {id:'jijel',name:'جيجل'},{id:'chekfa',name:'الشقفة'},{id:'borjtz',name:'برج الطهر'},
+  {id:'taher',name:'الطاهير'},{id:'elanseur',name:'العنصر'},{id:'elmilia',name:'الميلية'},
+  {id:'jmaabnihbibi',name:'الجمعة بني حبيبي'},{id:'khriwoujoul',name:'خيري واد اعجول'},
+  {id:'sidiabd',name:'سيدي عبد العزيز'},{id:'elkanarnchfi',name:'القنار نشفي'},
+  {id:'settara',name:'السطارة'},{id:'owladyhyakhdrosh',name:'اولاد يحيى خدروش'},
+  {id:'bourawibelhad',name:'بوراوي بلهادف'},{id:'owladask',name:'اولاد عسكر بوسيف'},
+  {id:'sidimaarof',name:'سيدي معروف'},{id:'owladrabe',name:'اولاد رابح'},
+  {id:'ghbala',name:'غبالة'},{id:'shnna',name:'الشنة'},
+  {id:'taksna',name:'تاكسنة'},{id:'selma',name:'سلمى'},
+  {id:'awana',name:'العوانة'},{id:'qaws',name:'قاوس'},
+  {id:'amireabdlqadr',name:'الأمير عبد القادر'},{id:'ziamamansoria',name:'زيامة المنصورية'},
+  {id:'irafen',name:'إيراقن'},{id:'boudriabnyajis',name:'بودريعة بن ياجيس'},
+  {id:'jmila',name:'جيملة'},{id:'wajana',name:'وجانة'}
+];
+const TILE_COLORS = ['#e8f4fd','#e8f8ee','#fef9e7','#fdeef0','#f0e8fd','#e8f0fd','#fef5e4','#e8fdf4','#fde8f4','#e4eafd','#f4fde8','#fde8e8'];
+const PALETTE2   = ['#27ae60','#2980b9','#8e44ad','#f39c12','#e74c3c','#16a085','#d35400','#2c3e50','#1abc9c','#c0392b','#7f8c8d','#6c5ce7'];
+
+let currentUser = null;
+let DB = { municipalities:{}, lists:[], votes:{}, locked:false, lastUpdated:null };
+let saveTimer = null;
+
+// ══════════════════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════════════════
+function toast(msg, type='success', dur=2800) {
+  const w = document.getElementById('toast-wrap');
+  const d = document.createElement('div');
+  d.className = `toast ${type}`; d.textContent = msg; w.appendChild(d);
+  setTimeout(() => { d.style.opacity='0'; d.style.transition='opacity .4s'; setTimeout(()=>d.remove(),400); }, dur);
+}
+
+// ══════════════════════════════════════════════════════════
+// CONFIRM
+// ══════════════════════════════════════════════════════════
+function confirm2(title, msg) {
+  return new Promise(res => {
+    document.getElementById('cfm-title').textContent = title;
+    document.getElementById('cfm-msg').textContent   = msg;
+    const ov = document.getElementById('confirm-overlay');
+    ov.classList.add('show');
+    const y = document.getElementById('cfm-yes');
+    const n = document.getElementById('cfm-no');
+    const done = v => { ov.classList.remove('show'); y.onclick=null; n.onclick=null; res(v); };
+    y.onclick = () => done(true); n.onclick = () => done(false);
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+// AUTH  ← الجزء المُصلَح الرئيسي
+// ══════════════════════════════════════════════════════════
+function showErr(msg) {
+  const e = document.getElementById('login-err');
+  e.textContent = msg; e.classList.add('show');
+}
+function hideErr() { document.getElementById('login-err').classList.remove('show'); }
+
+async function doLogin() {
+  hideErr();
+  const email = document.getElementById('l-user').value.trim();
+  const pass  = document.getElementById('l-pass').value;
+
+  if (!email || !pass) { showErr('الرجاء إدخال البريد الإلكتروني وكلمة المرور'); return; }
+
+  // تأكد أن Firebase جاهز
+  if (!window._auth || !window._fbFns) {
+    showErr('جارٍ تحميل Firebase… أعد المحاولة بعد ثانية'); return;
+  }
+
+  const btn = document.getElementById('login-btn');
+  btn.disabled = true; btn.textContent = '⏳ جارٍ الدخول...';
+
+  try {
+    await window._fbFns.signInWithEmailAndPassword(window._auth, email, pass);
+    // onAuthStateChanged سيكمل الباقي تلقائياً
+  } catch (err) {
+    console.error('Login error:', err.code, err.message);
+    const msgs = {
+      'auth/user-not-found'    : 'البريد الإلكتروني غير مسجل',
+      'auth/wrong-password'    : 'كلمة المرور غير صحيحة',
+      'auth/invalid-credential': 'البريد الإلكتروني أو كلمة المرور غير صحيحة',
+      'auth/invalid-email'     : 'صيغة البريد الإلكتروني غير صحيحة',
+      'auth/too-many-requests' : 'تم تعطيل الحساب مؤقتاً — حاول لاحقاً',
+      'auth/network-request-failed': 'خطأ في الاتصال — تحقق من الإنترنت',
+    };
+    showErr(msgs[err.code] || 'فشل تسجيل الدخول: ' + err.message);
+    btn.disabled = false; btn.textContent = '🔐 دخول';
+  }
+}
+
+function enterVisitor() {
+  currentUser = null;
+  startApp();
+}
+
+function logout() {
+  if (window._auth && window._fbFns) window._fbFns.signOut(window._auth).catch(()=>{});
+  currentUser = null;
+  location.reload();
+}
+
+// ══════════════════════════════════════════════════════════
+// Firebase — ننتظر حدث firebase-ready
+// ══════════════════════════════════════════════════════════
+window.addEventListener('firebase-ready', () => {
+  console.log('✅ Firebase جاهز');
+
+  window._fbFns.onAuthStateChanged(window._auth, user => {
+    if (user) {
+      console.log('✅ مسجل دخول:', user.email);
+      currentUser = { u: user.email, role: 'admin' };
+      startApp();
+    } else {
+      console.log('ℹ️ غير مسجل — عرض شاشة الدخول');
+      document.getElementById('login-screen').style.display = 'flex';
+    }
+  });
+});
+
+// ══════════════════════════════════════════════════════════
+// DB
+// ══════════════════════════════════════════════════════════
+async function loadDB() {
+  const ref = window._fbFns.doc(window._db, "elections", "jijel2026");
+  window._fbFns.onSnapshot(ref, snap => {
+    if (snap.exists()) DB = snap.data();
+    MUNIS.forEach(m => {
+      if (!DB.municipalities[m.id]) DB.municipalities[m.id] = { name:m.name, centers:[] };
+      if (!DB.votes[m.id]) DB.votes[m.id] = {};
+    });
+    renderAll();
+  });
+}
+
+async function saveDB() {
+  try {
+    DB.lastUpdated = new Date().toISOString();
+    const ref = window._fbFns.doc(window._db, "elections", "jijel2026");
+    await window._fbFns.setDoc(ref, DB);
+    showSaveDot(false);
+  } catch(e) {
+    console.error('saveDB error:', e);
+    toast('فشل الحفظ', 'error');
+  }
+}
+
+function autoSave(msg) {
+  showSaveDot(true);
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async () => {
+    await saveDB();
+    if (msg) toast(msg, 'success', 1800);
+  }, 600);
+}
+
+function showSaveDot(saving) {
+  const d = document.getElementById('save-dot');
+  if (d) d.classList.toggle('saving', saving);
+}
+
+// ══════════════════════════════════════════════════════════
+// APP START
+// ══════════════════════════════════════════════════════════
+async function startApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app-header').style.display   = 'flex';
+  document.getElementById('app-nav').style.display      = 'flex';
+
+  const isAdmin = !!currentUser;
+  if (isAdmin) {
+    ['ntab-data','ntab-results','ntab-tools'].forEach(id => document.getElementById(id).classList.remove('hidden'));
+  }
+
+  const ui = document.getElementById('user-info');
+  if (isAdmin) {
+    ui.innerHTML = `<span id="save-dot" class="save-dot"></span><span style="font-size:.72rem">${esc(currentUser.u)}</span> <button class="logout-btn" onclick="logout()">خروج</button>`;
+  } else {
+    ui.innerHTML = `<span class="vis-badge">زائر</span> <button class="logout-btn" onclick="logout()">خروج</button>`;
+  }
+
+  await loadDB();
+  gotoTab('display');
+}
+
+// ══════════════════════════════════════════════════════════
+// MUNICIPALITIES
+// ══════════════════════════════════════════════════════════
+function getMuniReg(mid) {
+  let t = 0;
+  (DB.municipalities[mid]?.centers||[]).forEach(c => c.offices?.forEach(o => t += Number(o.registered||0)));
+  return t;
+}
+function hasVotes(mid) {
+  const v = DB.votes[mid]; if (!v) return false;
+  for (const ci in v) for (const oi in v[ci]) if (v[ci][oi]) return true;
+  return false;
+}
+
+function buildMuniGrid(containerId, clickFn) {
+  const el = document.getElementById(containerId); if (!el) return;
+  let h = '<div class="muni-grid">';
+  MUNIS.forEach((m, i) => {
+    const done = hasVotes(m.id);
+    const reg  = getMuniReg(m.id);
+    const col  = TILE_COLORS[i % TILE_COLORS.length];
+    h += `<div class="muni-tile" data-name="${esc(m.name)}" style="background:linear-gradient(135deg,${col},${col}dd)" onclick="${clickFn}('${m.id}')">
+      ${done ? '<div class="done-dot"></div>' : ''}
+      <div>${esc(m.name)}</div>
+      ${reg > 0 ? `<div class="muni-num">${fmt(reg)} مسجل</div>` : ''}
+    </div>`;
+  });
+  h += '</div>'; el.innerHTML = h;
+}
+
+function filterGrid(id, q) {
+  document.querySelectorAll(`#${id} .muni-tile`).forEach(t => {
+    t.classList.toggle('hidden-tile', !!q && !t.dataset.name?.includes(q.trim()));
+  });
+}
+function filterLists(q) {
+  document.querySelectorAll('#lists-ui .list-row').forEach(r => {
+    r.style.display = q && !r.dataset.name?.includes(q.trim()) ? 'none' : 'flex';
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════════════════════
+function gotoTab(t) {
+  if (!currentUser && t !== 'display') { toast('هذه الميزة للمسؤولين فقط', 'error'); return; }
+  document.querySelectorAll('.ntab').forEach(n => n.classList.remove('active'));
+  document.getElementById('ntab-' + t)?.classList.add('active');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('show'));
+  document.getElementById('tab-' + t)?.classList.add('show');
+  if (t === 'display')  renderDisplay();
+  if (t === 'data')     { buildMuniGrid('muni-grid-data','openDataModal'); renderLists(); }
+  if (t === 'results')  buildMuniGrid('muni-grid-results','openResModal');
+}
+
+// ══════════════════════════════════════════════════════════
+// LISTS
+// ══════════════════════════════════════════════════════════
+function renderLists() {
+  const c = document.getElementById('lists-ui'); if (!c) return;
+  if (!DB.lists.length) { c.innerHTML = '<p class="txt-muted" style="padding:8px">لا توجد قوائم بعد. أضف قائمة أدناه.</p>'; return; }
+  c.innerHTML = DB.lists.map((l, i) => `
+    <div class="list-row" data-name="${esc(l.name)}">
+      <span>${i+1}. <b>${esc(l.name)}</b></span>
+      <div style="display:flex;gap:5px;flex-shrink:0">
+        <button class="btn btn-org btn-sm" onclick="editList(${i})">✏️</button>
+        <button class="btn btn-red btn-sm" onclick="delList(${i})">🗑</button>
+      </div>
+    </div>`).join('');
+}
+function addList() {
+  if (DB.locked) { toast('النتائج مقفلة','error'); return; }
+  const inp = document.getElementById('nl-inp'), n = inp.value.trim();
+  if (!n) { toast('أدخل اسم القائمة','error'); return; }
+  if (DB.lists.find(l => l.name === n)) { toast('القائمة موجودة مسبقاً','error'); return; }
+  DB.lists.push({ id:'L'+Date.now(), name:n });
+  inp.value = ''; renderLists(); autoSave('✅ تمت إضافة القائمة');
+}
+function editList(i) {
+  if (DB.locked) { toast('النتائج مقفلة','error'); return; }
+  const n = window.prompt('تعديل اسم القائمة:', DB.lists[i].name);
+  if (!n?.trim()) return;
+  DB.lists[i].name = n.trim(); renderLists(); autoSave('✅ تم تعديل القائمة');
+}
+async function delList(i) {
+  if (DB.locked) { toast('النتائج مقفلة','error'); return; }
+  if (!await confirm2('حذف القائمة', `حذف "${DB.lists[i].name}" نهائياً؟`)) return;
+  DB.lists.splice(i, 1); renderLists(); autoSave('✅ تم حذف القائمة');
+}
+
+// ══════════════════════════════════════════════════════════
+// DATA MODAL
+// ══════════════════════════════════════════════════════════
+let curMuni = null;
+function openDataModal(mid) {
+  if (!currentUser) { toast('تسجيل الدخول مطلوب','error'); return; }
+  if (DB.locked) { toast('النتائج مقفلة','error'); return; }
+  curMuni = mid;
+  document.getElementById('m-data-title').textContent = `📋 ${MUNIS.find(x=>x.id===mid)?.name}`;
+  renderDataBody(mid);
+  document.getElementById('ov-data').classList.add('show');
+}
+function renderDataBody(mid) {
+  const d = DB.municipalities[mid]; if (!d) return;
+  let h = `<div class="row2" style="margin-bottom:14px">
+    <div class="fg"><input id="nc-inp" placeholder="اسم مركز الاقتراع..."></div>
+    <button class="btn btn-suc btn-sm" onclick="addCenter('${mid}')">➕ مركز</button>
+  </div>`;
+  if (!d.centers?.length) h += `<p class="txt-muted txt-center">لا توجد مراكز بعد</p>`;
+  (d.centers||[]).forEach((c, ci) => {
+    h += `<div class="center-blk">
+      <div class="cn">
+        <span>🏫 ${esc(c.name)}</span>
+        <div style="display:flex;gap:5px">
+          <button class="btn btn-org btn-sm" onclick="editCenter('${mid}',${ci})">✏️ تعديل</button>
+          <button class="btn btn-red btn-sm" onclick="delCenter('${mid}',${ci})">🗑 حذف</button>
+        </div>
+      </div>`;
+    if (!c.offices?.length) h += `<p class="txt-muted" style="font-size:.78rem">لا توجد مكاتب</p>`;
+    (c.offices||[]).forEach((o, oi) => {
+      h += `<div class="off-row">
+        <span>📌 ${esc(o.name)} — <b>${fmt(o.registered)}</b> مسجل</span>
+        <div style="display:flex;gap:4px;flex-shrink:0">
+          <button class="btn btn-org btn-sm" onclick="editOff('${mid}',${ci},${oi})">✏️</button>
+          <button class="btn btn-red btn-sm" onclick="delOff('${mid}',${ci},${oi})">🗑</button>
+        </div>
+      </div>`;
+    });
+    h += `<div class="row2" style="margin-top:8px">
+      <div class="fg"><input id="on-${ci}" placeholder="اسم المكتب..."></div>
+      <div class="fg" style="max-width:115px"><input type="number" id="or-${ci}" placeholder="مسجلون" min="0"></div>
+      <button class="btn btn-suc btn-sm" onclick="addOff('${mid}',${ci})">➕</button>
+    </div></div>`;
+  });
+  document.getElementById('m-data-body').innerHTML = h;
+}
+function addCenter(mid) {
+  const n = (document.getElementById('nc-inp')?.value||'').trim();
+  if (!n) { toast('أدخل اسم المركز','error'); return; }
+  if (!DB.municipalities[mid].centers) DB.municipalities[mid].centers = [];
+  DB.municipalities[mid].centers.push({ name:n, offices:[] });
+  renderDataBody(mid); buildMuniGrid('muni-grid-data','openDataModal');
+  autoSave('✅ تمت إضافة المركز');
+}
+async function editCenter(mid, ci) {
+  const cur = DB.municipalities[mid].centers[ci].name;
+  const n = window.prompt('تعديل اسم المركز:', cur);
+  if (!n?.trim() || n.trim()===cur) return;
+  DB.municipalities[mid].centers[ci].name = n.trim();
+  renderDataBody(mid); autoSave('✅ تم تعديل المركز');
+}
+async function delCenter(mid, ci) {
+  const nm = DB.municipalities[mid].centers[ci].name;
+  const cnt = DB.municipalities[mid].centers[ci].offices?.length||0;
+  if (!await confirm2('حذف المركز', `حذف "${nm}" و${cnt} مكاتبه؟`)) return;
+  DB.municipalities[mid].centers.splice(ci, 1);
+  if (DB.votes[mid]) delete DB.votes[mid][ci];
+  renderDataBody(mid); buildMuniGrid('muni-grid-data','openDataModal');
+  autoSave('✅ تم حذف المركز');
+}
+function addOff(mid, ci) {
+  const n = (document.getElementById(`on-${ci}`)?.value||'').trim();
+  const r = parseInt(document.getElementById(`or-${ci}`)?.value)||0;
+  if (!n) { toast('أدخل اسم المكتب','error'); return; }
+  if (!DB.municipalities[mid].centers[ci].offices) DB.municipalities[mid].centers[ci].offices = [];
+  DB.municipalities[mid].centers[ci].offices.push({ name:n, registered:r });
+  renderDataBody(mid); autoSave('✅ تمت إضافة المكتب');
+}
+async function delOff(mid, ci, oi) {
+  const nm = DB.municipalities[mid].centers[ci].offices[oi].name;
+  if (!await confirm2('حذف المكتب', `حذف مكتب "${nm}"؟`)) return;
+  DB.municipalities[mid].centers[ci].offices.splice(oi, 1);
+  if (DB.votes[mid]?.[ci]) delete DB.votes[mid][ci][oi];
+  renderDataBody(mid); autoSave('✅ تم حذف المكتب');
+}
+function editOff(mid, ci, oi) {
+  const o = DB.municipalities[mid].centers[ci].offices[oi];
+  const n = window.prompt('اسم المكتب:', o.name); if (n===null) return;
+  const r = window.prompt('عدد المسجلين:', o.registered); if (r===null) return;
+  if (n.trim()) o.name = n.trim();
+  o.registered = parseInt(r)||0;
+  renderDataBody(mid); autoSave('✅ تم تعديل المكتب');
+}
+
+// ══════════════════════════════════════════════════════════
+// RESULTS MODAL
+// ══════════════════════════════════════════════════════════
+function openResModal(mid) {
+  if (!currentUser) { toast('تسجيل الدخول مطلوب','error'); return; }
+  if (DB.locked) { toast('النتائج مقفلة','error'); return; }
+  curMuni = mid;
+  document.getElementById('m-res-title').textContent = `✏️ ${MUNIS.find(x=>x.id===mid)?.name}`;
+  renderResStep1(mid);
+  document.getElementById('ov-res').classList.add('show');
+}
+function renderResStep1(mid) {
+  const d = DB.municipalities[mid];
+  document.getElementById('m-res-foot').innerHTML = `<button class="btn btn-ghost" onclick="closeOv('ov-res')">إغلاق</button>`;
+  if (!d.centers?.length) { document.getElementById('m-res-body').innerHTML = `<div class="note-box">⚠️ أدخل بيانات البلدية أولاً من تبويب "إدخال البيانات"</div>`; return; }
+  if (!DB.lists.length)   { document.getElementById('m-res-body').innerHTML = `<div class="note-box">⚠️ أدخل القوائم المترشحة أولاً</div>`; return; }
+  let h = '';
+  d.centers.forEach((c, ci) => {
+    h += `<div class="center-blk"><div class="cn">🏫 ${esc(c.name)}</div>`;
+    (c.offices||[]).forEach((o, oi) => {
+      const v = DB.votes[mid]?.[ci]?.[oi];
+      h += `<div class="off-row">
+        <span>${v?'✅':'⬜'} ${esc(o.name)} (${fmt(o.registered)} مسجل)</span>
+        <div style="display:flex;gap:4px;flex-shrink:0">
+          <button class="btn btn-pri btn-sm" onclick="showOffForm('${mid}',${ci},${oi})">إدخال</button>
+          ${v ? `<button class="btn btn-red btn-sm" onclick="clearOffVotes('${mid}',${ci},${oi})">🗑</button>` : ''}
+        </div>
+      </div>`;
+    });
+    h += `</div>`;
+  });
+  document.getElementById('m-res-body').innerHTML = h;
+}
+async function clearOffVotes(mid, ci, oi) {
+  if (!await confirm2('حذف النتائج','حذف نتائج هذا المكتب؟')) return;
+  if (DB.votes[mid]?.[ci]) delete DB.votes[mid][ci][oi];
+  autoSave('✅ تم مسح النتائج'); renderResStep1(mid); buildMuniGrid('muni-grid-results','openResModal');
+}
+function showOffForm(mid, ci, oi) {
+  const d = DB.municipalities[mid], o = d.centers[ci].offices[oi];
+  const ex = DB.votes[mid]?.[ci]?.[oi] || {};
+  let h = `<div style="background:#eef2f7;border-radius:6px;padding:8px 12px;margin-bottom:12px;font-size:.82rem;color:var(--pri)">
+    <b>🏫 ${esc(d.centers[ci].name)}</b> / 📌 ${esc(o.name)}</div>
+  <div class="a-box warn" id="vote-alert"></div><div class="a-box ok" id="vote-ok"></div>
+  <div class="fg"><label>المسجلون</label><input id="vr" type="number" value="${o.registered}" readonly></div>
+  <div class="fg"><label>المصوتون</label><input id="vv" type="number" value="${ex.voters||''}" min="0" oninput="calcExpr()"></div>
+  <div class="fg"><label>الأصوات الملغاة</label><input id="vi" type="number" value="${ex.invalid||''}" min="0" oninput="calcExpr()"></div>
+  <div class="fg"><label>المتنازع عليها</label><input id="vc" type="number" value="${ex.contested||''}" min="0" oninput="calcExpr()"></div>
+  <div class="fg"><label style="color:var(--acc)">✅ المعبر عنها (تلقائي)</label><input id="ve" type="number" value="${ex.expressed||''}" readonly></div>
+  <hr class="sep"><b style="color:var(--pri);font-size:.86rem">🗳️ أصوات القوائم:</b><div style="margin-top:8px">`;
+  DB.lists.forEach(l => {
+    h += `<div class="fg"><label>${esc(l.name)}</label><input type="number" id="vl-${l.id}" value="${ex.listVotes?.[l.id]||''}" min="0" oninput="checkSum()"></div>`;
+  });
+  h += `</div>`;
+  document.getElementById('m-res-body').innerHTML = h;
+  document.getElementById('m-res-foot').innerHTML = `
+    <button class="btn btn-suc" onclick="saveOffVotes('${mid}',${ci},${oi})">💾 حفظ</button>
+    <button class="btn btn-ghost" onclick="renderResStep1('${mid}')">⬅ رجوع</button>`;
+  if (ex.voters) calcExpr();
+}
+function calcExpr() {
+  const v = parseInt(document.getElementById('vv').value)||0;
+  const i = parseInt(document.getElementById('vi').value)||0;
+  const c = parseInt(document.getElementById('vc').value)||0;
+  document.getElementById('ve').value = Math.max(0, v-i-c); checkSum();
+}
+function checkSum() {
+  const expr = parseInt(document.getElementById('ve').value)||0;
+  let tot = 0; DB.lists.forEach(l => { tot += parseInt(document.getElementById(`vl-${l.id}`)?.value||0)||0; });
+  const al = document.getElementById('vote-alert'), ok = document.getElementById('vote-ok');
+  if (!al || !ok) return;
+  if (expr>0 && tot!==expr) { al.textContent=`⚠️ مجموع القوائم (${fmt(tot)}) ≠ المعبر عنها (${fmt(expr)}) — فرق: ${fmt(tot-expr)}`; al.classList.add('show'); ok.classList.remove('show'); }
+  else if (expr>0 && tot===expr) { ok.textContent=`✅ المجموع صحيح (${fmt(tot)})`; ok.classList.add('show'); al.classList.remove('show'); }
+  else { al.classList.remove('show'); ok.classList.remove('show'); }
+}
+async function saveOffVotes(mid, ci, oi) {
+  const voters    = parseInt(document.getElementById('vv').value)||0;
+  const invalid   = parseInt(document.getElementById('vi').value)||0;
+  const contested = parseInt(document.getElementById('vc').value)||0;
+  const expressed = Math.max(0, voters-invalid-contested);
+  const listVotes = {}; let tot = 0;
+  DB.lists.forEach(l => { const v=parseInt(document.getElementById(`vl-${l.id}`)?.value)||0; listVotes[l.id]=v; tot+=v; });
+  if (expressed>0 && tot!==expressed) {
+    if (!await confirm2('تحذير', `مجموع القوائم (${fmt(tot)}) ≠ المعبر عنها (${fmt(expressed)}). حفظ على أي حال؟`)) return;
+  }
+  if (!DB.votes[mid]) DB.votes[mid] = {};
+  if (!DB.votes[mid][ci]) DB.votes[mid][ci] = {};
+  DB.votes[mid][ci][oi] = { voters, invalid, contested, expressed, listVotes };
+  renderResStep1(mid); buildMuniGrid('muni-grid-results','openResModal');
+  if (document.getElementById('tab-display').classList.contains('show')) renderDisplay();
+  autoSave('✅ تم حفظ نتائج المكتب');
+}
+
+// ══════════════════════════════════════════════════════════
+// AGGREGATE
+// ══════════════════════════════════════════════════════════
+function aggMuni(mid) {
+  let r=0,vo=0,inv=0,con=0,exp=0; const lv={};
+  DB.lists.forEach(l => lv[l.id]=0);
+  (DB.municipalities[mid]?.centers||[]).forEach((c,ci) => {
+    (c.offices||[]).forEach((o,oi) => {
+      r += Number(o.registered||0);
+      const v = DB.votes[mid]?.[ci]?.[oi];
+      if (v) { vo+=v.voters||0; inv+=v.invalid||0; con+=v.contested||0; exp+=v.expressed||0;
+        DB.lists.forEach(l => lv[l.id]+=(v.listVotes?.[l.id])||0); }
+    });
+  });
+  return { registered:r, voters:vo, invalid:inv, contested:con, expressed:exp, listVotes:lv };
+}
+function aggWilaya() {
+  let r=0,vo=0,inv=0,con=0,exp=0; const lv={};
+  DB.lists.forEach(l => lv[l.id]=0);
+  MUNIS.forEach(m => {
+    const a = aggMuni(m.id); r+=a.registered; vo+=a.voters; inv+=a.invalid; con+=a.contested; exp+=a.expressed;
+    DB.lists.forEach(l => lv[l.id]+=a.listVotes[l.id]||0);
+  });
+  return { registered:r, voters:vo, invalid:inv, contested:con, expressed:exp, listVotes:lv };
+}
+function aggCenter(mid, ci) {
+  let r=0,vo=0,inv=0,con=0,exp=0; const lv={};
+  DB.lists.forEach(l => lv[l.id]=0);
+  (DB.municipalities[mid].centers[ci].offices||[]).forEach((o,oi) => {
+    r += Number(o.registered||0);
+    const v = DB.votes[mid]?.[ci]?.[oi];
+    if (v) { vo+=v.voters||0; inv+=v.invalid||0; con+=v.contested||0; exp+=v.expressed||0;
+      DB.lists.forEach(l => lv[l.id]+=(v.listVotes?.[l.id])||0); }
+  });
+  return { registered:r, voters:vo, invalid:inv, contested:con, expressed:exp, listVotes:lv };
+}
+
+// ══════════════════════════════════════════════════════════
+// DISPLAY
+// ══════════════════════════════════════════════════════════
+function getSortedLists(lv) {
+  return DB.lists.map((l,i) => ({...l, v:lv[l.id]||0, color:PALETTE2[i%PALETTE2.length]})).sort((a,b)=>b.v-a.v);
+}
+function mkStatRow(a, cols=5) {
+  return `<div class="stat-row" style="grid-template-columns:repeat(${cols},1fr)">
+    <div class="sc"><div class="ico">👥</div><div class="val">${fmt(a.registered)}</div><div class="lbl">المسجلون</div></div>
+    <div class="sc"><div class="ico">🗳️</div><div class="val">${fmt(a.voters)}</div><div class="lbl">المصوتون</div></div>
+    <div class="sc"><div class="ico">📈</div><div class="val">${pct(a.voters,a.registered)}%</div><div class="lbl">المشاركة</div></div>
+    <div class="sc"><div class="ico">🚫</div><div class="val">${fmt(a.invalid)}</div><div class="lbl">الملغاة</div></div>
+    <div class="sc"><div class="ico">✅</div><div class="val">${fmt(a.expressed)}</div><div class="lbl">المعبر عنها</div></div>
+  </div>`;
+}
+function mkTable(sl, expressed, showStatus, threshold, allBelow) {
+  if (!sl.length) return '<p class="txt-muted" style="padding:8px">لا توجد قوائم</p>';
+  let h = `<div class="tbl-wrap"><table class="rtbl"><thead><tr>
+    <th>#</th><th>القائمة</th><th>الأصوات</th><th>النسبة</th><th>التوزيع</th>
+    ${showStatus ? '<th>الوضع</th>' : ''}</tr></thead><tbody>`;
+  sl.forEach((l, i) => {
+    const p = pct(l.v, expressed);
+    const out = showStatus && expressed>0 && !allBelow && l.v<threshold;
+    h += `<tr class="${i===0?'r1':''}">
+      <td><b>${i+1}</b></td>
+      <td style="text-align:right"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${l.color};margin-left:6px;vertical-align:middle"></span>${esc(l.name)}</td>
+      <td><b>${fmt(l.v)}</b></td><td><b>${p}%</b></td>
+      <td class="bar-cell"><div class="bar-bg"><div class="bar-fg" style="width:${p}%;background:${l.color}"></div></div></td>
+      ${showStatus ? `<td>${out?'<span class="badge maqsa">مقصاة</span>':'<span class="badge pass">مؤهلة</span>'}</td>` : ''}</tr>`;
+  });
+  return h + `</tbody></table></div>`;
+}
+function renderDisplay() {
+  const a = aggWilaya();
+  const totOff = MUNIS.reduce((s,m)=>(DB.municipalities[m.id]?.centers||[]).reduce((ss,c)=>ss+(c.offices?.length||0),s),0);
+  const lb = document.getElementById('lock-badge');
+  if (lb) lb.innerHTML = DB.locked
+    ? '<span style="background:#8e44ad;color:#fff;font-size:.65rem;padding:3px 10px;border-radius:8px">🔒 مقفلة</span>'
+    : '<span style="background:#27ae60;color:#fff;font-size:.65rem;padding:3px 10px;border-radius:8px">🔓 مفتوحة</span>';
+  document.getElementById('wilaya-stats').innerHTML = `
+    <div class="stat-row" style="grid-template-columns:repeat(5,1fr)">
+      <div class="sc"><div class="ico">🏛️</div><div class="val">${totOff}</div><div class="lbl">مكاتب الاقتراع</div></div>
+      <div class="sc"><div class="ico">👥</div><div class="val">${fmt(a.registered)}</div><div class="lbl">الناخبون المسجلون</div></div>
+      <div class="sc"><div class="ico">🗳️</div><div class="val">${fmt(a.voters)}</div><div class="lbl">المصوتون</div></div>
+      <div class="sc"><div class="ico">✅</div><div class="val">${fmt(a.expressed)}</div><div class="lbl">المعبر عنها</div></div>
+      <div class="sc"><div class="ico">📈</div><div class="val">${pct(a.voters,a.registered)}%</div><div class="lbl">نسبة المشاركة</div></div>
+    </div>`;
+  const thr = a.expressed * .05;
+  const sl  = getSortedLists(a.listVotes);
+  const allBelow = !sl.some(l => l.v >= thr);
+  let tbl = `<div style="margin-bottom:8px;font-size:.79rem;color:#555;display:flex;gap:14px;flex-wrap:wrap">
+    <span>الملغاة: <b>${fmt(a.invalid)}</b></span>
+    <span>المتنازع عليها: <b>${fmt(a.contested)}</b></span>
+    ${a.expressed>0 ? `<span style="color:#e74c3c">عتبة 5%: <b>${Math.ceil(thr)}</b> صوت</span>` : ''}
+    ${DB.lastUpdated ? `<span style="margin-right:auto;color:#aaa">آخر تحديث: ${new Date(DB.lastUpdated).toLocaleString('ar')}</span>` : ''}
+  </div>`;
+  tbl += mkTable(sl, a.expressed, true, thr, allBelow);
+  document.getElementById('wilaya-table').innerHTML = tbl;
+  renderCharts(sl, a.expressed);
+  buildMuniGrid('muni-grid-display','openDispModal');
+}
+
+// ══════════════════════════════════════════════════════════
+// CHARTS
+// ══════════════════════════════════════════════════════════
+function rrect(ctx,x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
+}
+function renderCharts(sl, expressed) {
+  const pc = document.getElementById('pie-c'); if (!pc) return;
+  const cx=120,cy=120,r=90,ir=48,ctx=pc.getContext('2d'); ctx.clearRect(0,0,240,240);
+  let start = -Math.PI/2; const tot = sl.reduce((s,l)=>s+l.v,0)||1;
+  sl.forEach(l => {
+    if (!l.v) return; const ang=(l.v/tot)*Math.PI*2;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,start,start+ang);ctx.fillStyle=l.color;ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+    const mid=start+ang/2,p=(l.v/tot)*100;
+    if(p>4){const lx=cx+Math.cos(mid)*(r+ir)/2*.9,ly=cy+Math.sin(mid)*(r+ir)/2*.9;ctx.fillStyle='#fff';ctx.font='bold 9px Tahoma';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(p.toFixed(1)+'%',lx,ly);}
+    start+=ang;
+  });
+  ctx.beginPath();ctx.arc(cx,cy,ir,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+  ctx.fillStyle='#0d3b66';ctx.font='bold 10px Tahoma';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('الأصوات',cx,cy-6);ctx.fillText('المعبر عنها',cx,cy+8);
+  const bc = document.getElementById('bar-c'); if (!bc) return;
+  const bw = Math.max(500, sl.length*75); bc.width=bw; bc.height=200;
+  const bctx = bc.getContext('2d'); bctx.clearRect(0,0,bw,200);
+  const topN=sl.slice(0,12), maxV=Math.max(...topN.map(l=>l.v),1);
+  const bw2=Math.min(48,(bw/topN.length)-14), gap=(bw-topN.length*bw2)/(topN.length+1);
+  topN.forEach((l,i)=>{
+    const bh=Math.max(2,Math.floor((l.v/maxV)*128));
+    const x=gap+i*(bw2+gap),y=145-bh;
+    bctx.fillStyle=l.color;rrect(bctx,x,y,bw2,bh,4);bctx.fill();
+    bctx.fillStyle='#1a3a5c';bctx.font='bold 9px Tahoma';bctx.textAlign='center';bctx.fillText(fmt(l.v),x+bw2/2,y-10);
+    bctx.fillStyle=l.color;bctx.font='bold 8px Tahoma';bctx.fillText(pct(l.v,expressed)+'%',x+bw2/2,y-1);
+    bctx.fillStyle='#444';bctx.font='8px Tahoma';
+    l.name.split(' ').slice(0,2).forEach((w,wi)=>bctx.fillText(w,x+bw2/2,155+wi*11));
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+// MUNI DISPLAY MODAL
+// ══════════════════════════════════════════════════════════
+function openDispModal(mid) {
+  const mn = MUNIS.find(x=>x.id===mid);
+  document.getElementById('m-disp-title').textContent = `📊 ${mn?.name}`;
+  const a=aggMuni(mid), wa=aggWilaya(), thr=wa.expressed*.05;
+  const sl=getSortedLists(a.listVotes), allBelow=!sl.some(l=>l.v>=thr);
+  let h = mkStatRow(a, 3);
+  h += `<div style="font-size:.79rem;color:#555;margin-bottom:8px;display:flex;gap:12px;flex-wrap:wrap"><span>ملغاة: <b>${fmt(a.invalid)}</b></span><span>متنازع: <b>${fmt(a.contested)}</b></span></div>`;
+  h += mkTable(sl, a.expressed, true, thr, allBelow);
+  const d = DB.municipalities[mid];
+  if (d.centers?.length) {
+    h += `<h4 style="color:var(--pri);margin:16px 0 10px;font-size:.88rem">📍 تفاصيل المراكز والمكاتب</h4>`;
+    d.centers.forEach((c, ci) => {
+      const ca=aggCenter(mid,ci), csl=getSortedLists(ca.listVotes);
+      h += `<div class="ctr-block">
+        <div class="ctr-head" onclick="toggleCtr(this)">
+          <span>🏫 ${esc(c.name)}</span>
+          <span style="font-size:.75rem;opacity:.88">${fmt(ca.registered)} مسجل | ${fmt(ca.voters)} مصوت | ${pct(ca.voters,ca.registered)}% ▼</span>
+        </div>
+        <div class="ctr-body">
+          <div class="stat-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:10px">
+            <div class="sc"><div class="val" style="font-size:.95rem">${fmt(ca.registered)}</div><div class="lbl">مسجلون</div></div>
+            <div class="sc"><div class="val" style="font-size:.95rem">${fmt(ca.voters)}</div><div class="lbl">مصوتون</div></div>
+            <div class="sc"><div class="val" style="font-size:.95rem">${fmt(ca.invalid)}</div><div class="lbl">ملغاة</div></div>
+            <div class="sc"><div class="val" style="font-size:.95rem">${fmt(ca.expressed)}</div><div class="lbl">معبر عنها</div></div>
+          </div>
+          ${mkTable(csl,ca.expressed,false,thr,allBelow)}
+          <h5 style="color:var(--pri);margin:10px 0 8px;font-size:.81rem">📌 تفاصيل المكاتب</h5>`;
+      (c.offices||[]).forEach((o,oi) => {
+        const v = DB.votes[mid]?.[ci]?.[oi];
+        if (!v) { h+=`<div class="off-card"><div class="off-card-head"><span>📌 ${esc(o.name)}</span><span style="color:#e67e22">لم تُدخل نتائج</span></div></div>`; return; }
+        const osl = getSortedLists(v.listVotes||{});
+        h += `<div class="off-card">
+          <div class="off-card-head">
+            <span>📌 ${esc(o.name)}</span>
+            <span>${fmt(o.registered)} مسجل | ${fmt(v.voters)} مصوت | ${pct(v.voters,o.registered)}%</span>
+          </div>
+          <div style="padding:8px 12px">
+            <div style="display:flex;gap:10px;flex-wrap:wrap;font-size:.78rem;margin-bottom:8px">
+              <span>🚫 ملغاة: <b>${fmt(v.invalid)}</b></span><span>⚖️ متنازع: <b>${fmt(v.contested)}</b></span><span>✅ معبر: <b>${fmt(v.expressed)}</b></span>
+            </div>${mkTable(osl,v.expressed,false,thr,allBelow)}
+          </div>
+        </div>`;
+      });
+      h += `</div></div>`;
+    });
+  }
+  document.getElementById('m-disp-body').innerHTML = h;
+  document.getElementById('ov-disp').classList.add('show');
+}
+function toggleCtr(el) {
+  const b = el.nextElementSibling; b.classList.toggle('open');
+  const s = el.querySelector('span:last-child');
+  if (s) s.textContent = s.textContent.replace(/[▼▲]/, b.classList.contains('open') ? '▲' : '▼');
+}
+
+// ══════════════════════════════════════════════════════════
+// SEATS
+// ══════════════════════════════════════════════════════════
+function distributeSeats() {
+  const a = aggWilaya();
+  if (!a.expressed) { toast('لا توجد أصوات معبر عنها بعد','error'); return; }
+  const SEATS=7, thr=a.expressed*.05, vpSeat=Math.round(a.expressed/SEATS);
+  let all  = DB.lists.map((l,i)=>({...l,v:a.listVotes[l.id]||0,color:PALETTE2[i%PALETTE2.length]}));
+  let qual = all.filter(l=>l.v>=thr);
+  const allBelow = !qual.length; if(allBelow) qual=[...all];
+  const totQ = qual.reduce((s,l)=>s+l.v,0)||1;
+  qual.forEach(l=>{l.quota=(l.v/totQ)*SEATS;l.seats=Math.floor(l.quota);l.rem=l.quota-l.seats;});
+  let rem = SEATS-qual.reduce((s,l)=>s+l.seats,0);
+  [...qual].sort((a,b)=>b.rem-a.rem).forEach((l,i)=>{if(i<rem)l.seats++;});
+  qual.sort((a,b)=>b.v-a.v);
+  const elim = all.filter(l=>!allBelow&&l.v<thr).sort((a,b)=>b.v-a.v);
+  let h = `<div class="seats-hdr">
+    <span style="font-size:.98rem;font-weight:bold">🏛️ توزيع المقاعد البرلمانية — ولاية جيجل</span>
+    <span style="font-size:.8rem;opacity:.85">${SEATS} مقاعد | 2026</span>
+  </div><div class="seats-body">`;
+  h += `<div class="quota-box">📊 معدل الأصوات لكل مقعد: <span class="qval">~${fmt(vpSeat)} صوت</span>
+    <span style="color:#555;font-size:.8rem">${fmt(a.expressed)} صوت ÷ ${SEATS} مقاعد</span></div>`;
+  if (allBelow) h+=`<div class="allbelow-box">⚠️ لا توجد قائمة تجاوزت عتبة الـ5% — تم التوزيع على جميع القوائم</div>`;
+  else h+=`<div class="threshold-box">📌 عتبة 5%: <b style="color:#e74c3c">${Math.ceil(thr)} صوت</b> — القوائم دون هذا الحد تُقصى</div>`;
+  h += `<div style="text-align:center;font-size:.79rem;color:#666;margin-bottom:6px">التمثيل البرلماني</div><div class="parl-vis">`;
+  qual.forEach(l=>{for(let s=0;s<l.seats;s++)h+=`<div class="seat-dot" style="background:${l.color}" title="${esc(l.name)}">${esc(l.name.substring(0,2))}</div>`;});
+  h += `</div><div class="seats-grid">`;
+  qual.forEach((l,i)=>{
+    const vps=l.seats>0?Math.round(l.v/l.seats):0;
+    h+=`<div class="seat-card" style="background:linear-gradient(135deg,${l.color},${l.color}bb)">
+      <span class="ribbon">#${i+1}</span>
+      <div style="font-size:.88rem;font-weight:bold;margin-bottom:5px">${esc(l.name)}</div>
+      <div style="font-size:.77rem;opacity:.9;margin-bottom:4px">🗳️ ${fmt(l.v)} | ${pct(l.v,a.expressed)}%</div>
+      <div style="font-size:2rem;font-weight:bold;line-height:1">🪑 ${l.seats}</div>
+      ${l.seats>0?`<div style="font-size:.72rem;opacity:.82;margin-top:5px">~${fmt(vps)} صوت/مقعد</div>`:''}
+    </div>`;
+  });
+  elim.forEach(l=>h+=`<div class="seat-card elim"><span class="ribbon">مقصاة</span>
+    <div style="font-size:.88rem;font-weight:bold;margin-bottom:5px">${esc(l.name)}</div>
+    <div style="font-size:.77rem;opacity:.9">${fmt(l.v)} | ${pct(l.v,a.expressed)}%</div>
+    <div style="font-size:.76rem;margin-top:8px;opacity:.82">أقل من 5% — لا مقاعد</div>
+  </div>`);
+  h += `</div></div>`;
+  const sec = document.getElementById('seats-section');
+  sec.innerHTML=h; sec.classList.remove('hidden'); sec.scrollIntoView({behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════════════════════
+// LOCK
+// ══════════════════════════════════════════════════════════
+async function lockResults() {
+  if (!await confirm2('قفل النتائج','قفل النتائج ومنع أي تعديل لاحق؟')) return;
+  DB.locked=true; autoSave('🔒 تم قفل النتائج'); renderDisplay();
+}
+async function unlockResults() {
+  if (!await confirm2('فتح النتائج','إعادة فتح النتائج للتعديل؟')) return;
+  DB.locked=false; autoSave('🔓 تم فتح النتائج'); renderDisplay();
+}
+
+// ══════════════════════════════════════════════════════════
+// EXPORT / IMPORT / SNAPSHOT
+// ══════════════════════════════════════════════════════════
+function exportJSON() {
+  const blob=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=`jijel_${new Date().toISOString().slice(0,10)}.json`;
+  a.click(); URL.revokeObjectURL(url); toast('📤 تم تصدير البيانات','success');
+}
+function importJSON(input) {
+  const file=input.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=async e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!await confirm2('استيراد البيانات','ستُستبدل جميع البيانات الحالية. متابعة؟')){input.value='';return;}
+      DB=data; await saveDB(); renderAll(); toast('✅ تم استيراد البيانات','success');
+    }catch(err){ toast('خطأ في قراءة الملف','error'); }
+    input.value='';
+  };
+  reader.readAsText(file);
+}
+function saveSnapshot() {
+  const a=aggWilaya(), sl=getSortedLists(a.listVotes), thr=a.expressed*.05;
+  const allBelow=!sl.some(l=>l.v>=thr);
+  const rows=sl.map((l,i)=>`<tr style="${i===0?'background:#fffde7;font-weight:bold':''}">
+    <td>${i+1}</td><td>${esc(l.name)}</td><td>${fmt(l.v)}</td><td>${pct(l.v,a.expressed)}%</td>
+    <td>${a.expressed>0&&!allBelow&&l.v<thr?'مقصاة':'مؤهلة'}</td></tr>`).join('');
+  const muniRows=MUNIS.map(m=>{
+    const ma=aggMuni(m.id);
+    return`<tr><td>${esc(m.name)}</td><td>${fmt(ma.registered)}</td><td>${fmt(ma.voters)}</td><td>${pct(ma.voters,ma.registered)}%</td><td>${fmt(ma.expressed)}</td></tr>`;
+  }).join('');
+  const html=`<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8">
+  <title>نتائج الانتخابات - ولاية جيجل 2026</title>
+  <style>body{font-family:Tahoma,Arial,sans-serif;direction:rtl;padding:20px;color:#222}
+  h1{color:#0d3b66;border-bottom:3px solid #27ae60;padding-bottom:8px}
+  h2{color:#0d3b66;margin:20px 0 8px;font-size:1rem}
+  table{width:100%;border-collapse:collapse;margin-bottom:20px;font-size:.9rem}
+  th{background:#0d3b66;color:#fff;padding:8px 10px;text-align:center}
+  td{padding:7px 10px;text-align:center;border-bottom:1px solid #eee}
+  .stat{display:inline-block;background:#e8f4fd;border-radius:8px;padding:10px 18px;margin:5px;text-align:center}
+  .stat .v{font-size:1.3rem;font-weight:bold;color:#0d3b66}
+  .stat .l{font-size:.75rem;color:#666}
+  .ftr{text-align:center;color:#888;font-size:.78rem;margin-top:30px;border-top:1px solid #eee;padding-top:10px}
+  </style></head><body>
+  <h1>🗳️ نتائج الانتخابات التشريعية 2026 — ولاية جيجل</h1>
+  <p style="color:#888;font-size:.82rem">تاريخ الطباعة: ${new Date().toLocaleString('ar')}</p>
+  <div style="margin:14px 0">
+    <div class="stat"><div class="v">${fmt(a.registered)}</div><div class="l">المسجلون</div></div>
+    <div class="stat"><div class="v">${fmt(a.voters)}</div><div class="l">المصوتون</div></div>
+    <div class="stat"><div class="v">${pct(a.voters,a.registered)}%</div><div class="l">نسبة المشاركة</div></div>
+    <div class="stat"><div class="v">${fmt(a.expressed)}</div><div class="l">المعبر عنها</div></div>
+    <div class="stat"><div class="v">${fmt(a.invalid)}</div><div class="l">الملغاة</div></div>
+  </div>
+  <h2>📊 نتائج القوائم المترشحة</h2>
+  <table><thead><tr><th>#</th><th>القائمة</th><th>الأصوات</th><th>النسبة</th><th>الوضع</th></tr></thead>
+  <tbody>${rows}</tbody></table>
+  <h2>🏘️ ملخص نتائج البلديات</h2>
+  <table><thead><tr><th>البلدية</th><th>المسجلون</th><th>المصوتون</th><th>المشاركة</th><th>المعبر عنها</th></tr></thead>
+  <tbody>${muniRows}</tbody></table>
+  <div class="ftr">صالح عمور | 0799340844 | الانتخابات التشريعية 2026 | ولاية جيجل</div>
+  </body></html>`;
+  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a2=document.createElement('a'); a2.href=url; a2.download=`نتائج_جيجل_${new Date().toISOString().slice(0,10)}.html`;
+  a2.click(); URL.revokeObjectURL(url); toast('💾 تم حفظ النسخة في جهازك','success');
+}
+async function clearVotes() {
+  if(!await confirm2('مسح النتائج','مسح جميع نتائج الاقتراع؟'))return;
+  DB.votes={}; MUNIS.forEach(m=>DB.votes[m.id]={}); await saveDB(); renderAll(); toast('تم مسح النتائج','success');
+}
+async function clearAll() {
+  if(!await confirm2('مسح جميع البيانات','⚠️ مسح كل البيانات نهائياً؟'))return;
+  DB={municipalities:{},lists:[],votes:{},locked:false,lastUpdated:null};
+  MUNIS.forEach(m=>{DB.municipalities[m.id]={name:m.name,centers:[]};DB.votes[m.id]={};});
+  await saveDB(); renderAll(); toast('تم مسح جميع البيانات','success');
+}
+
+// ══════════════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════════════
+function closeOv(id) { document.getElementById(id)?.classList.remove('show'); }
+document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', e => { if(e.target===o) o.classList.remove('show'); }));
+function renderAll() {
+  renderLists();
+  buildMuniGrid('muni-grid-data','openDataModal');
+  buildMuniGrid('muni-grid-results','openResModal');
+  buildMuniGrid('muni-grid-display','openDispModal');
+  renderDisplay();
+}
+</script>
+</body>
+</html>
